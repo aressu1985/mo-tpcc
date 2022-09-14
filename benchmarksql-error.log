@@ -1,0 +1,13 @@
+20:55:34,917 [main] ERROR  jTPCC : unknown database type 'mo'
+20:57:59,449 [main] ERROR  OSCollector : OSCollector ./misc/os_collector_linux.py (No such file or directory)
+20:59:59,757 [Thread-0] ERROR  OSCollector$CollectData : OSCollector, unexpected EOF while reading from external helper process
+21:00:00,008 [main] ERROR  jTPCC : Term-00, java.lang.ArrayIndexOutOfBoundsException: 2
+21:00:56,742 [main] ERROR  jTPCC : Term-00, java.lang.ArrayIndexOutOfBoundsException: 2
+21:05:56,466 [main] ERROR  jTPCC : Term-00, java.lang.ArrayIndexOutOfBoundsException: 2
+2022-09-13 21:07:35 ERROR jTPCC:708 - Term-00, java.lang.ArrayIndexOutOfBoundsException: 2
+2022-09-14 10:57:22 ERROR jTPCC:708 - Term-00, java.lang.ArrayIndexOutOfBoundsException: 2
+2022-09-14 10:58:13 ERROR jTPCC:708 - Term-00, java.lang.ArrayIndexOutOfBoundsException: 2
+2022-09-14 11:01:23 ERROR jTPCC:708 - Term-00, java.lang.ArrayIndexOutOfBoundsException: 2
+2022-09-14 11:04:11 ERROR jTPCC:709 - Term-00, java.lang.ArrayIndexOutOfBoundsException: 2
+2022-09-14 11:34:51 ERROR jTPCC:709 - Term-00, java.lang.ArrayIndexOutOfBoundsException: 2
+2022-09-14 11:39:25 ERROR jTPCC:709 - Term-00, java.lang.ArrayIndexOutOfBoundsException: 2
