@@ -424,8 +424,8 @@ public class LoadDataWorker implements Runnable
 	    {
 		fmtStock.format("%d,%d,%d,%d,%d,%d,%s," +
 				"%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n",
-				s_i_id,
 				w_id,
+				s_i_id,
 				rnd.nextInt(10, 100),
 				0,
 				0,
@@ -483,9 +483,9 @@ public class LoadDataWorker implements Runnable
 	{
 	    if (writeCSV)
 	    {
-		fmtDistrict.format("%d,%d,%.2f,%.4f,%d,%s,%s,%s,%s,%s,%s\n",
-			d_id,
+		fmtDistrict.format("%d,%d,%.2f,%.4f,%d,%s,%s,%s,%s,%s,%s\n", 
 			w_id,
+			d_id,
 			30000.0,
 			((double)rnd.nextLong(0, 2000)) / 10000.0,
 			3001,
@@ -524,10 +524,10 @@ public class LoadDataWorker implements Runnable
 		{
 		    fmtCustomer.format("%d,%d,%d,%.4f,%s,%s,%s," +
 			"%.2f,%.2f,%.2f,%d,%d," +
-			"%s,%s,%s,%s,%s,%s,%s,%s,%s\n",
-			c_id,
-			d_id,
+			"%s,%s,%s,%s,%s,%s,%s,%s,%s\n", 
 			w_id,
+			d_id,
+			c_id,
 			((double)rnd.nextLong(0, 5000)) / 10000.0,
 			(rnd.nextInt(1, 100) <= 90) ? "GC" : "BC",
 			(c_id <= 1000) ? rnd.getCLast(c_id - 1) : rnd.getCLast(),
@@ -636,11 +636,11 @@ public class LoadDataWorker implements Runnable
 		randomCID[i] = i + 1;
 	    for (int i = 0; i < 3000; i++)
 	    {
-		int x = rnd.nextInt(0, 2999);
-		int y = rnd.nextInt(0, 2999);
-		int tmp = randomCID[x];
-		randomCID[x] = randomCID[y];
-		randomCID[y] = tmp;
+			int x = rnd.nextInt(0, 2999);
+			int y = rnd.nextInt(0, 2999);
+			int tmp = randomCID[x];
+			randomCID[x] = randomCID[y];
+			randomCID[y] = tmp;
 	    }
 
 	    for (int o_id = 1; o_id <= 3000; o_id++)
@@ -650,9 +650,9 @@ public class LoadDataWorker implements Runnable
 		if (writeCSV)
 		{
 		    fmtOrder.format("%d,%d,%d,%d,%s,%d,%d,%s\n",
-			o_id,
 			w_id,
 			d_id,
+			o_id,
 			randomCID[o_id - 1],
 			(o_id < 2101) ? rnd.nextInt(1, 10) : csvNull,
 			o_ol_cnt,

@@ -68,25 +68,27 @@ public class jTPCCUtil implements jTPCCConfig
     public static String getConfig(String db, Properties dbProps, String option)
 	throws Exception
     {
-	ResultSet   rs;
-	String      value;
-
-	if (dbConn == null)
-	{
-	    dbConn = DriverManager.getConnection(db, dbProps);
-	    stmtGetConfig = dbConn.prepareStatement(
-		"SELECT cfg_value FROM bmsql_config " +
-		" WHERE cfg_name = ?");
-	}
-	stmtGetConfig.setString(1, option);
-	rs = stmtGetConfig.executeQuery();
-	if (!rs.next())
-	    throw new Exception("DB Load configuration parameter '" +
-				option + "' not found");
-	value = rs.getString("cfg_value");
-	rs.close();
-
-	return value;
+        ResultSet   rs;
+        String      value;
+    
+        if (dbConn == null)
+        {
+            dbConn = DriverManager.getConnection(db, dbProps);
+            stmtGetConfig = dbConn.prepareStatement(
+            "SELECT cfg_value FROM bmsql_config " +
+            " WHERE cfg_name = ?");
+        }
+        
+        stmtGetConfig.setString(1, option);
+        rs = stmtGetConfig.executeQuery();
+        if (!rs.next())
+            throw new Exception("DB Load configuration parameter '" +
+                    option + "' not found");
+        
+        value = rs.getString("cfg_value");
+        rs.close();
+    
+	    return value;
     }
 
 } // end jTPCCUtil
