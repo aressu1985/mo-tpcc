@@ -789,8 +789,13 @@ public class jTPCCTData
 			payment.d_city = rs.getString("d_city");
 			payment.d_state = rs.getString("d_state");
 			payment.d_zip = rs.getString("d_zip");
+			/**
+			 * test code
+			 */
+			String dytd = rs.getString("d_ytd");
+			System.out.println("wid="+payment.w_id+",did="+payment.d_id+",dytd="+dytd+",incr="+payment.h_amount);
+			
 			rs.close();
-	
 			// Update the WAREHOUSE.
 			stmt = db.stmtPaymentUpdateWarehouse;
 			stmt.setDouble(1, payment.h_amount);
@@ -813,6 +818,11 @@ public class jTPCCTData
 			payment.w_city = rs.getString("w_city");
 			payment.w_state = rs.getString("w_state");
 			payment.w_zip = rs.getString("w_zip");
+			/**
+			 * test code
+			 */
+			String wytd = rs.getString("w_ytd");
+			System.out.println("wid="+payment.w_id+",wytd="+wytd+",incr="+payment.h_amount);
 			rs.close();
 	
 			// If C_LAST is given instead of C_ID (60%), determine the C_ID.
