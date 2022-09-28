@@ -20,10 +20,7 @@
             <directory>./</directory>
             <filtered>true</filtered>
             <includes>
-                <include>mo.yml</include>
-                <include>run.yml</include>
                 <include>log4j.properties</include>
-                <include>run.sh</include>
             </includes>
             <fileMode>755</fileMode>
             <outputDirectory>./</outputDirectory>

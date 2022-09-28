@@ -39,10 +39,10 @@ function setCP()
 	    cp="../lib/postgres/*:../lib/*"
 	    ;;
 	mo)
-  	  cp="../lib/mo/*:../lib/*"
+  	  cp="./lib/*"
   	  ;;
     esac
-    myCP=".:${cp}:../dist/*"
+    myCP=".:${cp}"
     export myCP
 }
 

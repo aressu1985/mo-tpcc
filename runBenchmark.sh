@@ -17,5 +17,6 @@ source funcs.sh $1
 setCP || exit 1
 
 myOPTS="-Dprop=$1 -DrunID=${SEQ}"
+echo "$myCP"
 
-java -cp "$myCP" $myOPTS jTPCC
+java -cp "$myCP" $myOPTS io.mo.jTPCC 

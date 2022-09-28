@@ -793,7 +793,7 @@ public class jTPCCTData
 			 * test code
 			 */
 			String dytd = rs.getString("d_ytd");
-			System.out.println("wid="+payment.w_id+",did="+payment.d_id+",dytd="+dytd+",incr="+payment.h_amount);
+			//System.out.println("wid="+payment.w_id+",did="+payment.d_id+",dytd="+dytd+",incr="+payment.h_amount);
 			
 			rs.close();
 			// Update the WAREHOUSE.
@@ -822,7 +822,7 @@ public class jTPCCTData
 			 * test code
 			 */
 			String wytd = rs.getString("w_ytd");
-			System.out.println("wid="+payment.w_id+",wytd="+wytd+",incr="+payment.h_amount);
+			//System.out.println("wid="+payment.w_id+",wytd="+wytd+",incr="+payment.h_amount);
 			rs.close();
 	
 			// If C_LAST is given instead of C_ID (60%), determine the C_ID.
