@@ -35,11 +35,11 @@ public class jTPCC implements jTPCCConfig
     private jTPCCTerminal[] terminals;
     private String[] terminalNames;
     private boolean terminalsBlockingExit = false;
-    private long terminalsStarted = 0, sessionCount = 0, transactionCount = 0;
+    private long terminalsStarted = 0, sessionCount = 0, transactionCount = 0, transactionErrorCount = 0;
     private Object counterLock = new Object();
 
     private long newOrderCounter = 0, sessionStartTimestamp, sessionEndTimestamp, sessionNextTimestamp=0, sessionNextKounter=0;
-    private long sessionEndTargetTime = -1, fastNewOrderCounter, recentTpmC=0, recentTpmTotal=0;
+    private long sessionEndTargetTime = -1, fastNewOrderCounter, recentTpmC=0, recentTpmTotal=0, recentTpmE=0;
     private boolean signalTerminalsRequestEndSent = false, databaseDriverLoaded = false;
 
     private FileOutputStream fileOutputStream;
@@ -636,12 +636,20 @@ public class jTPCC implements jTPCCConfig
 		}
     }
 
-    public void signalTerminalEndedTransaction(String terminalName, String transactionType, long executionTime, String comment, int newOrder)
+    public void signalTerminalEndedTransaction(String terminalName, String transactionType, long executionTime, String comment, int newOrder, boolean txnError)
     {
 		synchronized (counterLock)
 		{
 			transactionCount++;
 			fastNewOrderCounter += newOrder;
+
+			/**
+			 * customed code ,to statistic error txn 
+			 */
+			if(txnError) {
+				transactionErrorCount++;
+				//System.out.println("newOrder = " +newOrder+", txError = "+txnError);
+			}
 		}
 	
 		if(sessionEndTargetTime != -1 && System.currentTimeMillis() > sessionEndTargetTime)
@@ -680,21 +688,26 @@ public class jTPCC implements jTPCCConfig
 		long totalMem = Runtime.getRuntime().totalMemory() / (1024*1024);
 		double tpmC = (6000000*fastNewOrderCounter/(currTimeMillis - sessionStartTimestamp))/100.0;
 		double tpmTotal = (6000000*transactionCount/(currTimeMillis - sessionStartTimestamp))/100.0;
+		double tpmE = (6000000*transactionErrorCount/(currTimeMillis - sessionStartTimestamp))/100.0;
 	
 		System.out.println("");
 		log.info("Term-00, ");
 		log.info("Term-00, ");
 		log.info("Term-00, Measured tpmC (NewOrders) = " + tpmC);
 		log.info("Term-00, Measured tpmTOTAL = " + tpmTotal);
+		log.info("Term-00, Measured tpmE (ErrorCount) = " + tpmE);
 		log.info("Term-00, Session Start     = " + sessionStart );
 		log.info("Term-00, Session End       = " + sessionEnd);
 		log.info("Term-00, Transaction Count = " + (transactionCount-1));
+		log.info("Term-00, Transaction Error = " + (transactionErrorCount));
+		log.info("Term-00, Transaction NewOrders = " + (fastNewOrderCounter));
 
     }
 
     private void printMessage(String message)
     {
-		log.trace("Term-00, " + message);
+		//log.trace("Term-00, " + message);
+		log.info("Term-00, " + message);
     }
 
     private void errorMessage(String message)
@@ -728,6 +741,7 @@ public class jTPCC implements jTPCCConfig
 			Formatter fmt = new Formatter(informativeText);
 			double tpmC = (6000000*fastNewOrderCounter/(currTimeMillis - sessionStartTimestamp))/100.0;
 			double tpmTotal = (6000000*transactionCount/(currTimeMillis - sessionStartTimestamp))/100.0;
+			double tpmE = (6000000*transactionErrorCount/(currTimeMillis - sessionStartTimestamp))/100.0;
 	
 			sessionNextTimestamp += 1000;  /* update this every seconds */
 	

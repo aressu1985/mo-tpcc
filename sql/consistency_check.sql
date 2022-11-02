@@ -1,4 +1,4 @@
-(Select w_id, w_ytd from bmsql_warehouse) except(select d_w_id, sum(d_ytd) from bmsql_district group by d_w_id); 
+(Select w_id, w_ytd from bmsql_warehouse) except (select d_w_id, sum(d_ytd) from bmsql_district group by d_w_id);
 
 
 (Select d_w_id, d_id, D_NEXT_O_ID - 1 from bmsql_district)  except (select o_w_id, o_d_id, max(o_id) from bmsql_oorder group by  o_w_id, o_d_id);

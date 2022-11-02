@@ -8,10 +8,7 @@ package io.mo;/*
 
 import org.apache.log4j.*;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.util.Formatter;
 import java.util.Vector;
 
@@ -581,9 +578,9 @@ public class jTPCCTData
 	catch (SQLException se)
 	{
 	    log.error("Unexpected SQLException in NEW_ORDER");
-	    for (SQLException x = se; x != null; x = x.getNextException())
-			log.error(x.getMessage());
-	    se.printStackTrace();
+//	    for (SQLException x = se; x != null; x = x.getNextException())
+//			log.error(x.getMessage());
+//	    se.printStackTrace();
 
 	    try
 	    {
@@ -593,9 +590,12 @@ public class jTPCCTData
 	    }
 	    catch (SQLException se2)
 	    {
-			throw new Exception("Unexpected SQLException on rollback: " +
+			throw new Exception("TT_NEW_ORDER: Unexpected SQLException on rollback: " +
 				se2.getMessage());
 	    }
+		
+		throw new Exception("TT_NEW_ORDER: Unexpected SQLException on transaction execution: " +
+				se.getMessage());
 	}
 	catch (Exception e)
 	{
@@ -607,7 +607,7 @@ public class jTPCCTData
 	    }
 	    catch (SQLException se2)
 	    {
-			throw new Exception("Unexpected SQLException on rollback: " +
+			throw new Exception("TT_NEW_ORDER: Unexpected SQLException on rollback: " +
 					se2.getMessage());
 	    }
 	    throw e;
@@ -793,7 +793,7 @@ public class jTPCCTData
 			 * test code
 			 */
 			String dytd = rs.getString("d_ytd");
-			//System.out.println("wid="+payment.w_id+",did="+payment.d_id+",dytd="+dytd+",incr="+payment.h_amount);
+			System.out.println("wid="+payment.w_id+",did="+payment.d_id+",dytd="+dytd+",incr="+payment.h_amount);
 			
 			rs.close();
 			// Update the WAREHOUSE.
@@ -821,9 +821,15 @@ public class jTPCCTData
 			/**
 			 * test code
 			 */
+			ResultSet sumDis = db.stmtSumDistrict.executeQuery("select d_w_id, sum(d_ytd) from bmsql_district group by d_w_id");
+			sumDis.next();
 			String wytd = rs.getString("w_ytd");
-			//System.out.println("wid="+payment.w_id+",wytd="+wytd+",incr="+payment.h_amount);
+			String sum_d_ytd = sumDis.getString(2);
+			System.out.println("wid="+payment.w_id+",wytd="+wytd+", sum_d_ytd="+sum_d_ytd+", incr="+payment.h_amount);
 			rs.close();
+			
+			//test code
+			
 	
 			// If C_LAST is given instead of C_ID (60%), determine the C_ID.
 			if (payment.c_last != null)
@@ -951,9 +957,9 @@ public class jTPCCTData
 		catch (SQLException se)
 		{
 			log.error("Unexpected SQLException in PAYMENT");
-			for (SQLException x = se; x != null; x = x.getNextException())
-			log.error(x.getMessage());
-			se.printStackTrace();
+//			for (SQLException x = se; x != null; x = x.getNextException())
+//				log.error(x.getMessage());
+//			se.printStackTrace();
 	
 			try
 			{
@@ -961,9 +967,12 @@ public class jTPCCTData
 			}
 			catch (SQLException se2)
 			{
-			throw new Exception("Unexpected SQLException on rollback: " +
+			throw new Exception("TT_PAYMENT: Unexpected SQLException on rollback: " +
 					se2.getMessage());
 			}
+			throw new Exception("TT_PAYMENT: Unexpected SQLException on transaction execution: " +
+					se.getMessage());
+			
 		}
 		catch (Exception e)
 		{
@@ -973,7 +982,7 @@ public class jTPCCTData
 			}
 			catch (SQLException se2)
 			{
-			throw new Exception("Unexpected SQLException on rollback: " +
+			throw new Exception("TT_PAYMENT: Unexpected SQLException on rollback: " +
 					se2.getMessage());
 			}
 			throw e;
@@ -1251,9 +1260,9 @@ public class jTPCCTData
 		catch (SQLException se)
 		{
 			log.error("Unexpected SQLException in ORDER_STATUS");
-			for (SQLException x = se; x != null; x = x.getNextException())
-			log.error(x.getMessage());
-			se.printStackTrace();
+//			for (SQLException x = se; x != null; x = x.getNextException())
+//				log.error(x.getMessage());
+//			se.printStackTrace();
 	
 			try
 			{
@@ -1261,9 +1270,12 @@ public class jTPCCTData
 			}
 			catch (SQLException se2)
 			{
-			throw new Exception("Unexpected SQLException on rollback: " +
+			throw new Exception("ORDER_STATUS: Unexpected SQLException on rollback: " +
 					se2.getMessage());
 			}
+
+			throw new Exception("ORDER_STATUS: Unexpected SQLException on transaction execution: " +
+					se.getMessage());
 		}
 	catch (Exception e)
 	{
@@ -1273,7 +1285,7 @@ public class jTPCCTData
 	    }
 	    catch (SQLException se2)
 	    {
-		throw new Exception("Unexpected SQLException on rollback: " +
+		throw new Exception("ORDER_STATUS: Unexpected SQLException on rollback: " +
 				se2.getMessage());
 	    }
 	    throw e;
@@ -1407,9 +1419,9 @@ public class jTPCCTData
 		catch (SQLException se)
 		{
 			log.error("Unexpected SQLException in STOCK_LEVEL");
-			for (SQLException x = se; x != null; x = x.getNextException())
-			log.error(x.getMessage());
-			se.printStackTrace();
+//			for (SQLException x = se; x != null; x = x.getNextException())
+//				log.error(x.getMessage());
+//			se.printStackTrace();
 	
 			try
 			{
@@ -1417,9 +1429,12 @@ public class jTPCCTData
 			}
 			catch (SQLException se2)
 			{
-				throw new Exception("Unexpected SQLException on rollback: " +
+				throw new Exception("STOCK_LEVEL: Unexpected SQLException on rollback: " +
 					se2.getMessage());
 			}
+
+			throw new Exception("STOCK_LEVEL: Unexpected SQLException on transaction execution: " +
+					se.getMessage());
 		}
 		catch (Exception e)
 		{
@@ -1429,7 +1444,7 @@ public class jTPCCTData
 			}
 			catch (SQLException se2)
 			{
-			throw new Exception("Unexpected SQLException on rollback: " +
+			throw new Exception("STOCK_LEVEL: Unexpected SQLException on rollback: " +
 					se2.getMessage());
 			}
 			throw e;
@@ -1733,9 +1748,9 @@ public class jTPCCTData
 	catch (SQLException se)
 	{
 	    log.error("Unexpected SQLException in DELIVERY_BG");
-	    for (SQLException x = se; x != null; x = x.getNextException())
-		log.error(x.getMessage());
-	    se.printStackTrace();
+//	    for (SQLException x = se; x != null; x = x.getNextException())
+//			log.error(x.getMessage());
+//	    se.printStackTrace();
 
 	    try
 	    {
@@ -1743,9 +1758,12 @@ public class jTPCCTData
 	    }
 	    catch (SQLException se2)
 	    {
-		throw new Exception("Unexpected SQLException on rollback: " +
+		throw new Exception("DELIVERY_BG: Unexpected SQLException on rollback: " +
 				se2.getMessage());
 	    }
+
+		throw new Exception("DELIVERY_BG: Unexpected SQLException on transaction execution: " +
+				se.getMessage());
 	}
 	catch (Exception e)
 	{
@@ -1755,7 +1773,7 @@ public class jTPCCTData
 	    }
 	    catch (SQLException se2)
 	    {
-		throw new Exception("Unexpected SQLException on rollback: " +
+		throw new Exception("DELIVERY_BG: Unexpected SQLException on rollback: " +
 				se2.getMessage());
 	    }
 	    throw e;

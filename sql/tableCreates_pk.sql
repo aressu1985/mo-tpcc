@@ -1,5 +1,6 @@
 drop database if exists tpcc;
 create database if not exists tpcc;
+use tpcc;
 
 create table bmsql_config (
   cfg_name    varchar(30) primary key,
@@ -68,8 +69,9 @@ create table bmsql_history (
   h_w_id   integer,
   h_date   timestamp,
   h_amount decimal(6,2),
-  h_data   varchar(24)
-) PARTITION BY KEY(h_c_w_id);
+  h_data   varchar(24),
+  primary key (hist_id)
+);
 
 create table bmsql_new_order (
   no_w_id  integer   not null,

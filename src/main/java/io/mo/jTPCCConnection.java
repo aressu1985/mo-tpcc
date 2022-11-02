@@ -9,10 +9,7 @@ package io.mo;/*
  *
  */
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Properties;
 
 public class jTPCCConnection
@@ -55,12 +52,18 @@ public class jTPCCConnection
     public PreparedStatement    stmtDeliveryBGSelectSumOLAmount;
     public PreparedStatement    stmtDeliveryBGUpdateOrderLine;
     public PreparedStatement    stmtDeliveryBGUpdateCustomer;
+	
+	//test code
+	public Statement stmtSumDistrict;
 
     public jTPCCConnection(Connection dbConn, int dbType)
 	throws SQLException
     {
 	this.dbConn = dbConn;
 	this.dbType = dbType;
+	
+	//test code
+	stmtSumDistrict = dbConn.createStatement();
 
 	// PreparedStataments for NEW_ORDER
 	stmtNewOrderSelectWhseCust = dbConn.prepareStatement(

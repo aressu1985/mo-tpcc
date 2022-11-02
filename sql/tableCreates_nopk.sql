@@ -1,3 +1,8 @@
+drop database if exists tpcc;
+create database if not exists tpcc;
+use tpcc;
+
+
 create table bmsql_config (
   cfg_name    varchar(30) primary key,
   cfg_value   varchar(50)

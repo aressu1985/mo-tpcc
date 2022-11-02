@@ -120,7 +120,6 @@ public class jTPCCTerminal implements jTPCCConfig, Runnable
     private void executeTransactions(int numTransactions)
     {
 		boolean stopRunning = false;
-	
 		if(numTransactions != -1)
 			printMessage("Executing " + numTransactions + " transactions...");
 		else
@@ -132,6 +131,8 @@ public class jTPCCTerminal implements jTPCCConfig, Runnable
 			long transactionType = rnd.nextLong(1, 100);
 			int skippedDeliveries = 0, newOrder = 0;
 			String transactionTypeName;
+
+			boolean txnError = false;
 	
 			long transactionStart = System.currentTimeMillis();
 	
@@ -166,138 +167,157 @@ public class jTPCCTerminal implements jTPCCConfig, Runnable
 				catch (Exception e)
 				{
 					log.fatal(e.getMessage());
-					e.printStackTrace();
-					System.exit(4);
+					txnError = true;
+					//e.printStackTrace();
+					//System.exit(4);
 				}
 				transactionTypeName = "Payment";
 			}
 			else if(transactionType <= paymentWeight + stockLevelWeight)
 			{
-			jTPCCTData      term = new jTPCCTData();
-			term.setNumWarehouses(numWarehouses);
-			term.setWarehouse(terminalWarehouseID);
-			term.setDistrict(terminalDistrictID);
-			try
-			{
-				term.generateStockLevel(log, rnd, 0);
-				term.traceScreen(log);
-				term.execute(log, db);
-				parent.resultAppend(term);
-				term.traceScreen(log);
-			}
-			catch (Exception e)
-			{
-				log.fatal(e.getMessage());
-				e.printStackTrace();
-				System.exit(4);
-			}
-			transactionTypeName = "Stock-Level";
+				jTPCCTData      term = new jTPCCTData();
+				term.setNumWarehouses(numWarehouses);
+				term.setWarehouse(terminalWarehouseID);
+				term.setDistrict(terminalDistrictID);
+				try
+				{
+					term.generateStockLevel(log, rnd, 0);
+					term.traceScreen(log);
+					term.execute(log, db);
+					parent.resultAppend(term);
+					term.traceScreen(log);
+				}
+				catch (Exception e)
+				{
+					log.fatal(e.getMessage());
+					txnError = true;
+					//e.printStackTrace();
+					//System.exit(4);
+				}
+				transactionTypeName = "Stock-Level";
 			}
 			else if(transactionType <= paymentWeight + stockLevelWeight + orderStatusWeight)
 			{
-			jTPCCTData      term = new jTPCCTData();
-			term.setNumWarehouses(numWarehouses);
-			term.setWarehouse(terminalWarehouseID);
-			term.setDistrict(terminalDistrictID);
-			try
-			{
-				term.generateOrderStatus(log, rnd, 0);
-				term.traceScreen(log);
-				term.execute(log, db);
-				parent.resultAppend(term);
-				term.traceScreen(log);
-			}
-			catch (Exception e)
-			{
-				log.fatal(e.getMessage());
-				e.printStackTrace();
-				System.exit(4);
-			}
-			transactionTypeName = "Order-Status";
+				jTPCCTData      term = new jTPCCTData();
+				term.setNumWarehouses(numWarehouses);
+				term.setWarehouse(terminalWarehouseID);
+				term.setDistrict(terminalDistrictID);
+				try
+				{
+					term.generateOrderStatus(log, rnd, 0);
+					term.traceScreen(log);
+					term.execute(log, db);
+					parent.resultAppend(term);
+					term.traceScreen(log);
+				}
+				catch (Exception e)
+				{
+					log.fatal(e.getMessage());
+					txnError = true;
+					//e.printStackTrace();
+					//System.exit(4);
+				}
+				transactionTypeName = "Order-Status";
 			}
 			else if(transactionType <= paymentWeight + stockLevelWeight + orderStatusWeight + deliveryWeight)
 			{
-			jTPCCTData      term = new jTPCCTData();
-			term.setNumWarehouses(numWarehouses);
-			term.setWarehouse(terminalWarehouseID);
-			term.setDistrict(terminalDistrictID);
-			try
-			{
-				term.generateDelivery(log, rnd, 0);
-				term.traceScreen(log);
-				term.execute(log, db);
-				parent.resultAppend(term);
-				term.traceScreen(log);
-	
-				/*
-				 * The old style driver does not have a delivery
-				 * background queue, so we have to execute that
-				 * part here as well.
-				 */
-				jTPCCTData  bg = term.getDeliveryBG();
-				bg.traceScreen(log);
-				bg.execute(log, db);
-				parent.resultAppend(bg);
-				bg.traceScreen(log);
-	
-				skippedDeliveries = bg.getSkippedDeliveries();
-			}
-			catch (Exception e)
-			{
-				log.fatal(e.getMessage());
-				e.printStackTrace();
-				System.exit(4);
-			}
-			transactionTypeName = "Delivery";
+				jTPCCTData      term = new jTPCCTData();
+				term.setNumWarehouses(numWarehouses);
+				term.setWarehouse(terminalWarehouseID);
+				term.setDistrict(terminalDistrictID);
+				try
+				{
+					term.generateDelivery(log, rnd, 0);
+					term.traceScreen(log);
+					term.execute(log, db);
+					parent.resultAppend(term);
+					term.traceScreen(log);
+		
+					/*
+					 * The old style driver does not have a delivery
+					 * background queue, so we have to execute that
+					 * part here as well.
+					 */
+					jTPCCTData  bg = term.getDeliveryBG();
+					bg.traceScreen(log);
+					bg.execute(log, db);
+					parent.resultAppend(bg);
+					bg.traceScreen(log);
+		
+					skippedDeliveries = bg.getSkippedDeliveries();
+				}
+				catch (Exception e)
+				{
+					log.fatal(e.getMessage());
+					txnError = true;
+					//e.printStackTrace();
+					//System.exit(4);
+				}
+				transactionTypeName = "Delivery";
 			}
 			else
 			{
-			jTPCCTData      term = new jTPCCTData();
-			term.setNumWarehouses(numWarehouses);
-			term.setWarehouse(terminalWarehouseID);
-			term.setDistrict(terminalDistrictID);
-			try
-			{
-				term.generateNewOrder(log, rnd, 0);
-				term.traceScreen(log);
-				term.execute(log, db);
-				parent.resultAppend(term);
-				term.traceScreen(log);
-			}
-			catch (Exception e)
-			{
-				log.fatal(e.getMessage());
-				e.printStackTrace();
-				System.exit(4);
-			}
-			transactionTypeName = "New-Order";
-			newOrderCounter++;
-			newOrder = 1;
+				jTPCCTData      term = new jTPCCTData();
+				term.setNumWarehouses(numWarehouses);
+				term.setWarehouse(terminalWarehouseID);
+				term.setDistrict(terminalDistrictID);
+				try
+				{
+					term.generateNewOrder(log, rnd, 0);
+					term.traceScreen(log);
+					term.execute(log, db);
+					parent.resultAppend(term);
+					term.traceScreen(log);
+
+					/**
+					 * To MO, SI isolation will cause lots of w-w confict SQL exception
+					 * so need modify code to avoid tool exit when catch this exception
+					 * and the following two lines need to move into try block
+					 */
+					newOrderCounter++;
+					newOrder = 1;
+				}
+				catch (Exception e)
+				{
+					log.fatal(e.getMessage());
+					txnError = true;
+					//e.printStackTrace();
+					//System.exit(4);
+				}
+				transactionTypeName = "New-Order";
+
+				/**
+				 * origin code
+				newOrderCounter++;
+				newOrder = 1;
+				*/
 			}
 	
 			long transactionEnd = System.currentTimeMillis();
 	
 			if(!transactionTypeName.equals("Delivery"))
 			{
-			parent.signalTerminalEndedTransaction(this.terminalName, transactionTypeName, transactionEnd - transactionStart, null, newOrder);
+				//System.out.println("newOrder = " +newOrder+", txError = "+txnError);
+				parent.signalTerminalEndedTransaction(this.terminalName, transactionTypeName, transactionEnd - transactionStart, null, newOrder, txnError);
 			}
 			else
 			{
-			parent.signalTerminalEndedTransaction(this.terminalName, transactionTypeName, transactionEnd - transactionStart, (skippedDeliveries == 0 ? "None" : "" + skippedDeliveries + " delivery(ies) skipped."), newOrder);
+				//System.out.println("newOrder = " +newOrder+", txError = "+txnError);
+				parent.signalTerminalEndedTransaction(this.terminalName, transactionTypeName, transactionEnd - transactionStart, (skippedDeliveries == 0 ? "None" : "" + skippedDeliveries + " delivery(ies) skipped."), newOrder, txnError);
 			}
 	
 			if(limPerMin_Terminal>0){
-			long elapse = transactionEnd-transactionStart;
-			long timePerTx = 60000/limPerMin_Terminal;
-	
-			if(elapse<timePerTx){
-				try{
-				long sleepTime = timePerTx-elapse;
-				Thread.sleep((sleepTime));
+				long elapse = transactionEnd-transactionStart;
+				long timePerTx = 60000/limPerMin_Terminal;
+		
+				if(elapse<timePerTx){
+					try{
+					long sleepTime = timePerTx-elapse;
+					Thread.sleep((sleepTime));
+					}
+					catch(Exception e){
+					}
 				}
-				catch(Exception e){
-				}
-			}
 			}
 			if(stopRunningSignal) stopRunning = true;
 		}
@@ -326,7 +346,8 @@ public class jTPCCTerminal implements jTPCCConfig, Runnable
 
 
     private void printMessage(String message) {
-	log.trace(terminalName + ", " + message);
+	//log.trace(terminalName + ", " + message);
+		log.info(terminalName + ", " + message);
     }
 
 
