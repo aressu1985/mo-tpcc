@@ -792,9 +792,9 @@ public class jTPCCTData
 			/**
 			 * test code
 			 */
-			String dytd = rs.getString("d_ytd");
-			System.out.println("wid="+payment.w_id+",did="+payment.d_id+",dytd="+dytd+",incr="+payment.h_amount);
-			
+//			String dytd = rs.getString("d_ytd");
+//			System.out.println("wid="+payment.w_id+",did="+payment.d_id+",dytd="+dytd+",incr="+payment.h_amount);
+//			
 			rs.close();
 			// Update the WAREHOUSE.
 			stmt = db.stmtPaymentUpdateWarehouse;
@@ -821,11 +821,11 @@ public class jTPCCTData
 			/**
 			 * test code
 			 */
-			ResultSet sumDis = db.stmtSumDistrict.executeQuery("select d_w_id, sum(d_ytd) from bmsql_district group by d_w_id");
-			sumDis.next();
-			String wytd = rs.getString("w_ytd");
-			String sum_d_ytd = sumDis.getString(2);
-			System.out.println("wid="+payment.w_id+",wytd="+wytd+", sum_d_ytd="+sum_d_ytd+", incr="+payment.h_amount);
+//			ResultSet sumDis = db.stmtSumDistrict.executeQuery("select d_w_id, sum(d_ytd) from bmsql_district group by d_w_id");
+//			sumDis.next();
+//			String wytd = rs.getString("w_ytd");
+//			String sum_d_ytd = sumDis.getString(2);
+//			System.out.println("wid="+payment.w_id+",wytd="+wytd+", sum_d_ytd="+sum_d_ytd+", incr="+payment.h_amount);
 			rs.close();
 			
 			//test code
