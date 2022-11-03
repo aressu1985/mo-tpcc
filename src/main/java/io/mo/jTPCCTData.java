@@ -577,7 +577,7 @@ public class jTPCCTData
 	}
 	catch (SQLException se)
 	{
-	    log.error("Unexpected SQLException in NEW_ORDER");
+	    //log.error("Unexpected SQLException in NEW_ORDER");
 //	    for (SQLException x = se; x != null; x = x.getNextException())
 //			log.error(x.getMessage());
 //	    se.printStackTrace();
@@ -956,7 +956,7 @@ public class jTPCCTData
 		}
 		catch (SQLException se)
 		{
-			log.error("Unexpected SQLException in PAYMENT");
+			//log.error("Unexpected SQLException in PAYMENT");
 //			for (SQLException x = se; x != null; x = x.getNextException())
 //				log.error(x.getMessage());
 //			se.printStackTrace();
@@ -1259,7 +1259,7 @@ public class jTPCCTData
 		}
 		catch (SQLException se)
 		{
-			log.error("Unexpected SQLException in ORDER_STATUS");
+			//log.error("Unexpected SQLException in ORDER_STATUS");
 //			for (SQLException x = se; x != null; x = x.getNextException())
 //				log.error(x.getMessage());
 //			se.printStackTrace();
@@ -1418,7 +1418,7 @@ public class jTPCCTData
 		}
 		catch (SQLException se)
 		{
-			log.error("Unexpected SQLException in STOCK_LEVEL");
+			//log.error("Unexpected SQLException in STOCK_LEVEL");
 //			for (SQLException x = se; x != null; x = x.getNextException())
 //				log.error(x.getMessage());
 //			se.printStackTrace();
@@ -1747,7 +1747,7 @@ public class jTPCCTData
 	}
 	catch (SQLException se)
 	{
-	    log.error("Unexpected SQLException in DELIVERY_BG");
+	    //log.error("Unexpected SQLException in DELIVERY_BG");
 //	    for (SQLException x = se; x != null; x = x.getNextException())
 //			log.error(x.getMessage());
 //	    se.printStackTrace();
