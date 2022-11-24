@@ -57,7 +57,7 @@ And these Opertions must be executed step by step as the following descriptions,
 
 **Third,you should generate and load TPC-C data to by the command:**
 
-`./runBenchmark.sh props.mo warehouse 10`
+`./runLoader.sh props.mo warehouse 10`
 
 If only need to generate data, use command:
 
